@@ -5,6 +5,12 @@ import os
 # Add src to Python path so we can import from src.storage
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from src.storage.article_store import ArticleStore
 from src.storage.digest_store import DigestStore
 

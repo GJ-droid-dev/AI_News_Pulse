@@ -62,8 +62,8 @@ gantt
 | 1.8 | Write `src/utils/logger.py` (structured logging) | `src/utils/logger.py` |
 | 1.9 | Write `src/utils/date_utils.py` (date helpers) | `src/utils/date_utils.py` |
 | 1.10 | Provision Pinecone serverless index (`ai-news-articles`, 384-dim matching BGE, cosine) | Pinecone Dashboard / CLI |
-| 1.11 | Provision PostgreSQL database (local Docker or Supabase/Neon free tier) | Docker Compose or cloud dashboard |
-| 1.12 | Create PostgreSQL schema — `articles` and `digests` tables | `src/storage/article_store.py`, `src/storage/digest_store.py` |
+| 1.11 | Provision Neon (Serverless Postgres) database | Neon Dashboard |
+| 1.12 | Create Neon (Serverless Postgres) Database for raw articles and final digests (Lightweight metadata) | `src/storage/article_store.py`, `src/storage/digest_store.py` |
 | 1.13 | Write `src/storage/vector_store.py` (Pinecone wrapper: upsert, query, delete) | `src/storage/vector_store.py` |
 | 1.14 | Create `.env.example` with all required env vars | `.env.example` |
 | 1.15 | Add `.gitignore` | `.gitignore` |
@@ -147,7 +147,12 @@ CREATE TABLE digests (
 CREATE INDEX idx_digests_date ON digests(date);
 ```
 
-### 1.4 Acceptance Criteria
+### 1.4 Neon Serverless Postgres Limits
+- **Compute Time**: 100 CU-hrs monthly per project
+- **Storage**: 0.5 GB of storage per project
+- **Scale**: Sizes up to 2 CU (8 GB RAM)
+
+### 1.5 Acceptance Criteria
 
 - [ ] Running `pip install -r requirements.txt` succeeds without errors
 - [ ] `config_loader.py` can parse all three YAML config files
@@ -299,7 +304,7 @@ flowchart LR
 | 4.2 | Write `src/rag/retriever.py` — for each of 6 categories: embed seed query → Pinecone Top-3 → fetch dense semantic matches | `src/rag/retriever.py` |
 | 4.3 | Write `src/rag/summarizer.py` — Groq client, `llama-3.3-70b-versatile` call with fallback to `llama-3.1-8b-instant` | `src/rag/summarizer.py` |
 | 4.4 | Write `src/rag/formatter.py` — parse LLM output → structured JSON + Markdown file | `src/rag/formatter.py` |
-| 4.5 | Write `src/generate_digest.py` — orchestrator: retrieve → summarize → format → save to PostgreSQL + file | `src/generate_digest.py` |
+| 4.5 | Write `src/generate_digest.py` — orchestrator: retrieve → summarize → format → save to Neon Postgres + file | `src/generate_digest.py` |
 | 4.6 | Write `tests/test_retriever.py` | `tests/test_retriever.py` |
 | 4.7 | Write `tests/test_summarizer.py` (mock Groq responses) | `tests/test_summarizer.py` |
 | 4.8 | Write `tests/test_formatter.py` | `tests/test_formatter.py` |
@@ -374,7 +379,7 @@ Each run produces two files in `data/digests/`:
 - [ ] Fallback to `llama-3.1-8b-instant` works when primary fails
 - [ ] Generated digest has correct structure: Highlight + 6 category sections
 - [ ] Every bullet point contains a citation link
-- [ ] Output saved to PostgreSQL `digests` table AND `data/digests/{date}.md` + `.json`
+- [ ] Output saved to Neon `digests` table AND `data/digests/{date}.md` + `.json`
 - [ ] Content guardrails enforced (no opinions, no financial advice, no speculation)
 - [ ] All unit tests pass
 
@@ -389,7 +394,7 @@ Each run produces two files in `data/digests/`:
 | # | Task | Files Created / Modified |
 |---|---|---|
 | 5.1 | Write `src/delivery/api.py` — FastAPI app with 4 endpoints | `src/delivery/api.py` |
-| 5.2 | `GET /v1/digest/today` — return today's digest JSON from PostgreSQL | `src/delivery/api.py` |
+| 5.2 | `GET /v1/digest/today` — return today's digest JSON from Neon Postgres | `src/delivery/api.py` |
 | 5.3 | `GET /v1/digest/{date}` — return a specific date's digest | `src/delivery/api.py` |
 | 5.4 | `GET /v1/digest/archive` — paginated list of available digests | `src/delivery/api.py` |
 | 5.5 | `GET /v1/health` — pipeline status, Pinecone connectivity, counts | `src/delivery/api.py` |

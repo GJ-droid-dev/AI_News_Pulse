@@ -672,7 +672,7 @@ sequenceDiagram
 | **Vector Store** | Pinecone (Serverless) | Embedding storage + similarity search |
 | **LLM** | Groq — `llama-3.3-70b-versatile` / `llama-3.1-8b-instant` | Digest summarization (ultra-low latency) |
 | **API Framework** | FastAPI | REST API for serving digests |
-| **Database** | PostgreSQL | Article metadata + digest storage |
+| **Database** | Neon Serverless Postgres | Article metadata + digest storage |
 | **Frontend** | Vanilla JS + HTML + CSS (or React) | Read-only digest viewer |
 | **Email** | SendGrid / AWS SES | Optional email delivery |
 | **CI/CD** | GitHub Actions | Automated pipeline execution |

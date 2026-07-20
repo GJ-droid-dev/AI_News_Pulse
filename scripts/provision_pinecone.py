@@ -2,6 +2,12 @@ import os
 import sys
 # pyrefly: ignore [missing-import]
 from pinecone import Pinecone, ServerlessSpec
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 from pathlib import Path
 import yaml
 

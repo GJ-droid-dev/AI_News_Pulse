@@ -1,9 +1,13 @@
 import sys
 import logging
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Add project root to sys path so we can run this script directly from anywhere
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+# Load environment variables
+load_dotenv()
 
 from src.utils.logger import setup_logger
 from src.utils.date_utils import get_current_utc_time, format_date_for_db

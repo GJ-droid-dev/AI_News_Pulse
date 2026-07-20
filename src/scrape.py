@@ -2,8 +2,13 @@ import sys
 import logging
 from pathlib import Path
 
-# Add project root to sys path so we can run this script directly from anywhere
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 from src.utils.config_loader import ConfigLoader
 from src.utils.logger import setup_logger

@@ -6,6 +6,12 @@ from pathlib import Path
 # Add project root to sys path so we can run this script directly from anywhere
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from src.utils.logger import setup_logger
 from src.utils.date_utils import get_current_utc_time, format_date_for_db
 from src.storage.article_store import ArticleStore
