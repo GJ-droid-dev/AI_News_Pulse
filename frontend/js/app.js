@@ -1,4 +1,4 @@
-const PROD_API_URL = "https://ainewspulse-production-402d.up.railway.app";
+const PROD_API_URL = "https://ainewspulse-production-402d.up.railway.app/v1";
 const LOCAL_API_URL = "http://localhost:8000/v1";
 const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? LOCAL_API_URL
