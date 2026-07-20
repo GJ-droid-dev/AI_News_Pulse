@@ -21,8 +21,15 @@ logger = setup_logger("generate_digest")
 def main():
     logger.info("🚀 Starting AI News Pulse Digest Generation Pipeline...")
     
-    # 1. Determine target date (Defaults to today)
-    target_date = format_date_for_db(get_current_utc_time())
+    import os
+    from src.utils.date_utils import parse_date
+    
+    target_date_str = os.environ.get("TARGET_DATE")
+    if target_date_str:
+        target_date = format_date_for_db(parse_date(target_date_str))
+    else:
+        target_date = format_date_for_db(get_current_utc_time())
+        
     logger.info(f"Target digest date: {target_date}")
     
     # 2. Initialize Components
@@ -54,7 +61,13 @@ def main():
     # 5. Format and Save Locally
     try:
         logger.info("Step 3: Formatting and saving markdown output...")
-        structured_payload = formatter.format_and_save(raw_markdown, target_date)
+        # Get category counts to include in metadata
+        from src.storage.article_store import ArticleStore
+        article_store = ArticleStore()
+        category_counts = article_store.get_article_counts_by_category(target_date)
+        metadata = {"category_counts": category_counts}
+        
+        structured_payload = formatter.format_and_save(raw_markdown, target_date, metadata)
     except Exception as e:
         logger.error(f"Failed during formatting phase: {e}")
         sys.exit(1)

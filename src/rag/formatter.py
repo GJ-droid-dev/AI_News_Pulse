@@ -11,7 +11,7 @@ class DigestFormatter:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-    def format_and_save(self, raw_markdown: str, target_date: str) -> Dict[str, Any]:
+    def format_and_save(self, raw_markdown: str, target_date: str, metadata: Dict[str, Any] = None) -> Dict[str, Any]:
         """
         Saves the raw markdown output from the LLM to disk for local archiving, 
         and extracts a structured JSON payload (including an executive summary) 
@@ -56,7 +56,8 @@ class DigestFormatter:
             "date": target_date,
             "executive_summary": executive_summary,
             "full_markdown": raw_markdown,
-            "file_path": str(md_filename)
+            "file_path": str(md_filename),
+            "metadata": metadata or {}
         }
         
         return structured_data

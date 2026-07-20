@@ -7,26 +7,32 @@ const API_BASE_URL = window.location.hostname === "localhost" || window.location
 document.addEventListener("DOMContentLoaded", () => {
     // Determine which page is loading
     const isArchivePage = window.location.pathname.includes("archive.html");
+    const isTodayPage = window.location.pathname.includes("today.html");
 
     if (isArchivePage) {
         loadArchive();
+    } else if (isTodayPage) {
+        loadDigest(false);
     } else {
-        loadDigest();
+        loadDigest(true);
     }
 });
 
 /**
- * Fetches the digest for today, or a specific date if provided in the URL query parameters.
+ * Fetches the digest for today, or the latest if on Home page
  */
-async function loadDigest() {
+async function loadDigest(isHome = false) {
     try {
         // Support linking from the archive page via ?date=YYYY-MM-DD
         const urlParams = new URLSearchParams(window.location.search);
         const dateParam = urlParams.get('date');
 
-        const endpoint = dateParam
-            ? `${API_BASE_URL}/digest/${dateParam}`
-            : `${API_BASE_URL}/digest/today`;
+        let endpoint = `${API_BASE_URL}/digest/today`;
+        if (dateParam) {
+            endpoint = `${API_BASE_URL}/digest/${dateParam}`;
+        } else if (isHome) {
+            endpoint = `${API_BASE_URL}/digest/latest`;
+        }
 
         const response = await fetch(endpoint);
 
@@ -35,6 +41,13 @@ async function loadDigest() {
         }
 
         const data = await response.json();
+        
+        // Show banner if Home page but digest is not from today
+        if (isHome && !data.is_today) {
+            const banner = document.getElementById("nothing-new-banner");
+            if (banner) banner.classList.remove("hidden");
+        }
+
         renderDigest(data);
 
     } catch (error) {
@@ -54,7 +67,7 @@ function renderDigest(data) {
 
     // 2. Inject Executive Summary (Hero Card)
     const summaryText = data.highlight_json?.executive_summary || "No executive summary available for this date.";
-    document.getElementById("executive-summary").innerHTML = marked.parse(summaryText);
+    document.getElementById("executive-summary").innerHTML = `<md-ripple></md-ripple>${marked.parse(summaryText)}`;
 
     // 3. Parse and Inject Markdown Categories
     const markdown = data.markdown_content;
@@ -66,14 +79,27 @@ function renderDigest(data) {
     sections.forEach((section, index) => {
         // Create Accordion Container
         const accordionItem = document.createElement("div");
-        accordionItem.className = `accordion-item glass-panel ${index === 0 ? 'active' : ''}`;
+        accordionItem.className = `accordion-item m3-card ${index === 0 ? 'active' : ''}`;
+        accordionItem.style.position = 'relative';
+
+        // Add M3 Elevation
+        accordionItem.innerHTML = '<md-elevation></md-elevation>';
 
         // Create Accordion Header
         const header = document.createElement("button");
         header.className = "accordion-header";
+        
+        // Add Category Count Badge
+        const count = data.metadata_json?.category_counts?.[section.title];
+        const countBadge = count ? `<span class="badge count-badge">${count} articles</span>` : '';
+        
         header.innerHTML = `
-            <span>${section.title}</span>
-            <span class="accordion-icon">▼</span>
+            <md-ripple></md-ripple>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span>${section.title}</span>
+                ${countBadge}
+            </div>
+            <md-icon class="accordion-icon">expand_more</md-icon>
         `;
 
         // Create Accordion Content Container

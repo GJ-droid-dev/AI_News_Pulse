@@ -43,11 +43,12 @@ class DigestStore:
     def insert_digest(self, digest_data: dict):
         """Inserts or overwrites the daily generated RAG digest."""
         query = """
-            INSERT INTO digests (date, highlight_json, markdown_content, pipeline_status)
-            VALUES (%(date)s, %(highlight_json)s, %(markdown_content)s, 'completed')
+            INSERT INTO digests (date, highlight_json, markdown_content, metadata_json, pipeline_status)
+            VALUES (%(date)s, %(highlight_json)s, %(markdown_content)s, %(metadata_json)s, 'completed')
             ON CONFLICT (date) DO UPDATE 
             SET highlight_json = EXCLUDED.highlight_json,
                 markdown_content = EXCLUDED.markdown_content,
+                metadata_json = EXCLUDED.metadata_json,
                 pipeline_status = 'completed',
                 generated_at = NOW();
         """
@@ -55,6 +56,7 @@ class DigestStore:
         db_payload = {
             "date": digest_data["date"],
             "highlight_json": psycopg2.extras.Json({"executive_summary": digest_data["executive_summary"]}),
+            "metadata_json": psycopg2.extras.Json(digest_data.get("metadata", {})),
             "markdown_content": digest_data["full_markdown"]
         }
         

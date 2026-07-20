@@ -45,7 +45,7 @@ async def startup_event():
 
 def get_digest_by_date(target_date: str) -> Optional[Dict[str, Any]]:
     """Helper function to fetch a digest securely from PostgreSQL."""
-    query = "SELECT date, highlight_json, markdown_content, generated_at FROM digests WHERE date = %s;"
+    query = "SELECT date, highlight_json, markdown_content, metadata_json, generated_at FROM digests WHERE date = %s;"
     try:
         with store.get_connection() as conn:
             with conn.cursor() as cur:
@@ -55,6 +55,20 @@ def get_digest_by_date(target_date: str) -> Optional[Dict[str, Any]]:
                     return dict(row)
     except Exception as e:
         logger.error(f"DB Error fetching digest for {target_date}: {e}")
+    return None
+
+def get_latest_digest() -> Optional[Dict[str, Any]]:
+    """Helper function to fetch the absolute latest digest from PostgreSQL."""
+    query = "SELECT date, highlight_json, markdown_content, metadata_json, generated_at FROM digests ORDER BY date DESC LIMIT 1;"
+    try:
+        with store.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(query)
+                row = cur.fetchone()
+                if row:
+                    return dict(row)
+    except Exception as e:
+        logger.error(f"DB Error fetching latest digest: {e}")
     return None
 
 # Phase 5.2: GET /v1/digest/today
@@ -69,6 +83,21 @@ async def get_today_digest():
             status_code=status.HTTP_404_NOT_FOUND, 
             detail="Today's digest is not yet available. The pipeline may still be running."
         )
+    return digest
+
+@app.get("/v1/digest/latest")
+async def get_latest():
+    """Returns the most recent AI digest and indicates if it is from today."""
+    today = format_date_for_db(get_current_utc_time())
+    digest = get_latest_digest()
+    
+    if not digest:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="No digests found."
+        )
+        
+    digest["is_today"] = (str(digest["date"]) == today)
     return digest
 
 # Phase 5.3: GET /v1/digest/{date}
@@ -89,7 +118,7 @@ async def get_digest(target_date: date):
 async def get_archive(limit: int = 30, offset: int = 0):
     """Returns a paginated list of available digests (used for the archive page)."""
     query = """
-        SELECT date, highlight_json, generated_at 
+        SELECT date, highlight_json, metadata_json, generated_at 
         FROM digests 
         ORDER BY date DESC 
         LIMIT %s OFFSET %s;

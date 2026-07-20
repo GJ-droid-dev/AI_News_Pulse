@@ -8,16 +8,13 @@
    ========================================================================== */
 :root {
     /* Light Mode (Default) */
-    --bg-color: #f3f4f6; /* Cool gray */
-    --text-main: #1f2937;
-    --text-muted: #6b7280;
+    --bg-color: #f8fafc; /* Slate 50 */
+    --surface-color: #ffffff;
+    --border-color: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
     --accent-color: #4f46e5; /* Indigo */
     --accent-hover: #4338ca;
-    
-    /* Glassmorphism Tokens */
-    --glass-bg: rgba(255, 255, 255, 0.65);
-    --glass-border: rgba(255, 255, 255, 0.4);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
     
     /* Layout & UI Tokens */
     --border-radius-lg: 16px;
@@ -30,15 +27,12 @@
 body.dark-mode {
     /* Dark Mode Overrides */
     --bg-color: #0f172a; /* Slate 900 */
+    --surface-color: #1e293b; /* Slate 800 */
+    --border-color: #334155;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
-    --accent-color: #6366f1; /* Lighter indigo */
-    --accent-hover: #818cf8;
-    
-    /* Dark Glassmorphism Tokens */
-    --glass-bg: rgba(30, 41, 59, 0.65); /* Slate 800 with opacity */
-    --glass-border: rgba(255, 255, 255, 0.05);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --accent-color: #818cf8; /* Lighter indigo */
+    --accent-hover: #a5b4fc;
 }
 
 /* ==========================================================================
@@ -87,10 +81,8 @@ a:hover {
     position: sticky;
     top: 0;
     z-index: 100;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: var(--glass-bg);
-    border-bottom: 1px solid var(--glass-border);
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .nav-container {
@@ -180,15 +172,14 @@ a:hover {
 }
 
 /* ==========================================================================
-   Glassmorphism Reusables
+   M3 Card Reusables
    ========================================================================== */
-.glass-panel {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
+.m3-card, .hero-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
-    box-shadow: var(--glass-shadow);
+    position: relative;
+    overflow: hidden;
 }
 
 /* ==========================================================================

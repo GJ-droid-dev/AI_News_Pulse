@@ -24,9 +24,15 @@ logger = setup_logger("embed_pipeline")
 def main():
     logger.info("🚀 Starting AI News Pulse Embedding Pipeline...")
     
-    # 1. Determine Target Date (Today)
-    # We embed articles whose published_date matches today's date.
-    target_date = format_date_for_db(get_current_utc_time())
+    import os
+    from src.utils.date_utils import parse_date
+    
+    target_date_str = os.environ.get("TARGET_DATE")
+    if target_date_str:
+        target_date = format_date_for_db(parse_date(target_date_str))
+    else:
+        target_date = format_date_for_db(get_current_utc_time())
+        
     logger.info(f"Target embedding date: {target_date}")
     
     # 2. Initialize Components

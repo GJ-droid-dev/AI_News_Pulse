@@ -76,3 +76,21 @@ class ArticleStore:
         except Exception as e:
             logger.error(f"Failed to fetch articles for date {target_date}: {e}")
             return []
+
+    def get_article_counts_by_category(self, target_date: str) -> dict:
+        """Returns the number of articles per category for a given date."""
+        query = """
+            SELECT category, COUNT(*) as count
+            FROM articles 
+            WHERE published_date = %s
+            GROUP BY category
+        """
+        try:
+            with self.get_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(query, (target_date,))
+                    rows = cur.fetchall()
+                    return {row['category']: row['count'] for row in rows}
+        except Exception as e:
+            logger.error(f"Failed to fetch article counts for date {target_date}: {e}")
+            return {}

@@ -16,6 +16,19 @@
     
     <!-- Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Material Web (M3) Setup -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script type="importmap">
+      {
+        "imports": {
+          "@material/web/": "https://esm.run/@material/web/"
+        }
+      }
+    </script>
+    <script type="module">
+      import '@material/web/all.js';
+    </script>
 </head>
 <body class="light-mode">
     <!-- Prevent White Flash (FOUC) by immediately applying saved theme -->
@@ -27,12 +40,13 @@
     </script>
     <header class="navbar">
         <div class="nav-container">
-            <h1 class="logo">AI News Pulse</h1>
+            <h1 class="logo">AI News Pulse <span class="badge">Home</span></h1>
             <div class="nav-actions">
-                <a href="archive.html" class="nav-link">Archive</a>
-                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">
-                    🌙
-                </button>
+                <md-text-button href="today.html">Today</md-text-button>
+                <md-text-button href="archive.html">Archive</md-text-button>
+                <md-icon-button id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <md-icon>dark_mode</md-icon>
+                </md-icon-button>
             </div>
         </div>
     </header>
@@ -41,6 +55,14 @@
         <!-- Status Bar -->
         <div class="status-bar">
             <span id="last-updated-text">Loading latest digest...</span>
+        </div>
+        
+        <!-- Nothing New Banner (Hidden by default) -->
+        <div id="nothing-new-banner" class="hidden">
+            <div class="banner-content">
+                <md-icon>info</md-icon>
+                <p>Nothing new for now. Here is the latest available news.</p>
+            </div>
         </div>
 
         <!-- Error State -->
@@ -51,7 +73,7 @@
         <!-- Digest Content -->
         <div id="digest-content" class="hidden">
             <!-- Hero Section -->
-            <section class="hero-card glass-panel">
+            <section class="hero-card m3-card">
                 <div class="hero-label">⭐ HIGHLIGHT OF THE DAY</div>
                 <div id="executive-summary" class="hero-content">
                     <!-- JS injects summary here -->
@@ -65,12 +87,7 @@
         </div>
     </main>
 
-    <footer class="site-footer">
-        <div class="footer-container">
-            <p>&copy; 2026 AI News Pulse. Built with RAG technology.</p>
-            <p class="disclaimer">Disclaimer: Content is synthesized by AI from various sources and may contain inaccuracies.</p>
-        </div>
-    </footer>
+    <!-- Footer removed as per M3 restructure -->
 
     <!-- Scripts -->
     <script src="js/theme.js"></script>
