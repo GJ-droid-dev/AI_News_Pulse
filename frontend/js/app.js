@@ -1,4 +1,8 @@
-const API_BASE_URL = "http://localhost:8000/v1";
+const PROD_API_URL = "https://YOUR_RAILWAY_APP_URL/v1"; // Update this with your actual Railway URL
+const LOCAL_API_URL = "http://localhost:8000/v1";
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+    ? LOCAL_API_URL 
+    : PROD_API_URL;
 
 document.addEventListener("DOMContentLoaded", () => {
     // Determine which page is loading
