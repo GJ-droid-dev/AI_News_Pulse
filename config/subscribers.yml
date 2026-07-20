@@ -1,0 +1,8 @@
+# AI News Pulse — Subscriber List for Email Delivery
+# Add email addresses and their preferred timezone here
+
+subscribers:
+  - email: "example@domain.com"
+    name: "Admin"
+    timezone: "Asia/Kolkata"
+    active: true

@@ -1,0 +1,105 @@
+# AI News Pulse — Source Definitions
+# Categories: llm_models, research_papers, startups_funding, policy_regulation, open_source_tools, industry_applications
+
+sources:
+  - name: "TechCrunch AI"
+    url: "https://techcrunch.com/category/artificial-intelligence/feed/"
+    type: "rss"
+    category: "startups_funding"
+    rate_limit_ms: 1000
+
+  - name: "VentureBeat AI"
+    url: "https://venturebeat.com/category/ai/feed/"
+    type: "rss"
+    category: "industry_applications"
+    rate_limit_ms: 1000
+
+  - name: "OpenAI Blog"
+    url: "https://openai.com/news/"
+    type: "html"
+    category: "llm_models"
+    rate_limit_ms: 2000
+    selectors:
+      article_container: "ul.list-unstyled li"
+      title: "h3"
+      link: "a"
+      date: "span.date"
+
+  - name: "Google DeepMind Blog"
+    url: "https://deepmind.google/discover/blog/"
+    type: "html"
+    category: "research_papers"
+    rate_limit_ms: 2000
+    selectors:
+      article_container: "div.c-blog-feed__item"
+      title: "h3.c-blog-card__title"
+      link: "a"
+      date: "span.c-blog-card__date"
+
+  - name: "Anthropic News"
+    url: "https://www.anthropic.com/news"
+    type: "html"
+    category: "llm_models"
+    rate_limit_ms: 2000
+    selectors:
+      article_container: "div.news-grid a"
+      title: "h2"
+      link: ""
+      date: "time"
+
+  - name: "Hugging Face Blog"
+    url: "https://huggingface.co/blog"
+    type: "html"
+    category: "open_source_tools"
+    rate_limit_ms: 1500
+    selectors:
+      article_container: "a.blog-card"
+      title: "h3"
+      link: ""
+      date: "time"
+
+  - name: "Mistral AI News"
+    url: "https://mistral.ai/news/"
+    type: "html"
+    category: "open_source_tools"
+    rate_limit_ms: 1500
+    selectors:
+      article_container: "a.post-card"
+      title: "h2"
+      link: ""
+      date: "time"
+
+  - name: "MIT Tech Review - AI"
+    url: "https://www.technologyreview.com/topic/artificial-intelligence/"
+    type: "html"
+    category: "policy_regulation"
+    rate_limit_ms: 3000
+    selectors:
+      article_container: "div.teaser"
+      title: "h2.teaser__title"
+      link: "a.teaser__link"
+      date: "span.teaser__date"
+
+  - name: "The Verge AI"
+    url: "https://www.theverge.com/rss/artificial-intelligence/index.xml"
+    type: "rss"
+    category: "policy_regulation"
+    rate_limit_ms: 1000
+
+  - name: "arXiv CS.AI"
+    url: "http://export.arxiv.org/rss/cs.AI"
+    type: "rss"
+    category: "research_papers"
+    rate_limit_ms: 3000
+
+  - name: "Wired AI"
+    url: "https://www.wired.com/feed/category/business/latest/rss"
+    type: "rss"
+    category: "startups_funding"
+    rate_limit_ms: 1000
+
+  - name: "Artificial Intelligence News"
+    url: "https://www.artificialintelligence-news.com/feed/"
+    type: "rss"
+    category: "industry_applications"
+    rate_limit_ms: 1000

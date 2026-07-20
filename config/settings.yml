@@ -1,0 +1,28 @@
+pipeline:
+  schedule: "09:00"
+  timezone: "Asia/Kolkata"
+  max_articles_per_source: 20
+
+embedding:
+  model: "BAAI/bge-small-en-v1.5"
+  dimensions: 384
+  chunk_size: 512
+  chunk_overlap: 50
+
+vector_store:
+  provider: "pinecone"
+  index_name: "ai-news-articles"
+  top_k: 10
+  similarity_threshold: 0.70
+
+llm:
+  provider: "groq"
+  primary_model: "llama-3.3-70b-versatile"
+  fallback_model: "llama-3.1-8b-instant"
+  temperature: 0.1
+  max_tokens: 2000
+  timeout: 30
+
+database:
+  provider: "postgresql"
+  retention_days: 90

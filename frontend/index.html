@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Pulse — Your Daily AI Digest</title>
+    <meta name="description" content="A premium daily digest of the most important Artificial Intelligence news, papers, and model releases.">
+    
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="light-mode">
+    <header class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">AI News Pulse</h1>
+            <div class="nav-actions">
+                <a href="archive.html" class="nav-link">Archive</a>
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">
+                    🌙
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span id="last-updated-text">Loading latest digest...</span>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-container" class="error-box hidden">
+            <p>Failed to load today's digest. Please try again later or check the archive.</p>
+        </div>
+
+        <!-- Digest Content -->
+        <div id="digest-content" class="hidden">
+            <!-- Hero Section -->
+            <section class="hero-card glass-panel">
+                <div class="hero-label">⭐ HIGHLIGHT OF THE DAY</div>
+                <div id="executive-summary" class="hero-content">
+                    <!-- JS injects summary here -->
+                </div>
+            </section>
+
+            <!-- Dynamic Category Accordions -->
+            <div id="categories-container" class="accordion-group">
+                <!-- JS extracts markdown headings and injects accordions here -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 AI News Pulse. Built with RAG technology.</p>
+            <p class="disclaimer">Disclaimer: Content is synthesized by AI from various sources and may contain inaccuracies.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+.env
+.venv/
+
+# Environment Variables
+.env
+.env.local
+
+# Project Specific Data (Ignore contents, keep folders)
+logs/*
+data/digests/*
+data/raw/*
+!data/digests/.gitkeep
+!data/raw/.gitkeep
+!logs/.gitkeep
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Wireframes
+stitch_ai_news_pulse_wireframes/
