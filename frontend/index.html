@@ -18,6 +18,13 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body class="light-mode">
+    <!-- Prevent White Flash (FOUC) by immediately applying saved theme -->
+    <script>
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            document.body.className = savedTheme;
+        }
+    </script>
     <header class="navbar">
         <div class="nav-container">
             <h1 class="logo">AI News Pulse</h1>
